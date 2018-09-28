@@ -32,10 +32,10 @@ import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
     RequestQueue rq ;
-    String[] title, urlStr ;
+    String[] title, urlStr, excerpt ;
     List<Item> itemList = new ArrayList<>() ;
     myAdapter mAdapter ;
-    final int num =50;
+    int num =200;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,10 +66,12 @@ public class MainActivity extends AppCompatActivity {
                         try {
                                 title = matchPattern("\"resolved_title\":\"(.*?)\",",s) ;
                                 urlStr = matchPattern("\"given_url\":\"(.*?)\",",s) ;
+                                excerpt = matchPattern("\"excerpt\":\"(.*?)\",", s) ;
                                 for(int i = 0; i< title.length;i++) {
-                                title[i] = unicodeToString(title[i]).split("\"")[3] ;
+                                title[i] = ""+(i+1)+"."+unicodeToString(title[i]).split("\"")[3] ;
                                 urlStr[i] = urlStr[i].split("\"")[3].replaceAll("\\\\","")  ;
-                                Item i1 = new Item(title[i], urlStr[i]) ;
+                                excerpt[i] = unicodeToString(excerpt[i]).split("\"")[3] ;
+                                Item i1 = new Item(title[i], urlStr[i], excerpt[i]) ;
                                 itemList.add(i1) ;
                                 }
                             mAdapter.notifyDataSetChanged();
@@ -89,8 +91,9 @@ public class MainActivity extends AppCompatActivity {
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("consumer_key", "YOUR_CONSUMER_KEY");
                 map.put("access_token", "YOUR_ACCESS_TOKEN");
+                map.put("state", "all") ;
                 map.put("count",String.valueOf(num));
-                map.put("detail_type", "simple");
+                map.put("detailType", "complete");
                 return map;
             }
         } ;

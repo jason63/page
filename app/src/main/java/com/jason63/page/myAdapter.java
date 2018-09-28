@@ -31,11 +31,13 @@ public class myAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        String str = mList.get(position).getTitle() +"\n"+mList.get(position).getUrlStr();
+        String str = mList.get(position).getTitle() ;
+        String bodystr = mList.get(position).getBody();
         View view = LayoutInflater.from(getContext()).inflate(R.layout.list_item,parent,false) ;
         TextView tv = view.findViewById(R.id.txt) ;
-
+        TextView body = view.findViewById(R.id.body) ;
         tv.setText(str);
+        body.setText(bodystr);
         return view;
     }
 }
